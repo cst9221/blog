@@ -1,5 +1,5 @@
-import dynamic from "next/dynamic"
 import React, { DetailedHTMLProps, HTMLAttributes } from "react"
+import dynamic from "next/dynamic"
 
 interface Props extends React.SVGProps<SVGSVGElement> {
   name: IconName
@@ -8,7 +8,12 @@ interface Props extends React.SVGProps<SVGSVGElement> {
 const Icon = ({ name, ...props }: Props) => {
   const SVG = dynamic(() => import(`@/app/_assets/icon/${name}.svg`))
 
-  return <SVG {...props} />
+  return (
+    <SVG
+      className={`i-${name}`}
+      {...props}
+    />
+  )
 }
 
 export default Icon
