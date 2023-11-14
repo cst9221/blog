@@ -1,6 +1,3 @@
-import Icon from "../Icon"
-import styles from "./index.module.css"
-
 interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {}
 
 const Button = ({ children, ...props }: Props) => {
