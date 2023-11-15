@@ -1,13 +1,34 @@
+"use client"
+
 import Button from "@/app/_components/Button"
 import Mark from "@/app/_components/Highlight/Mark"
 import Icon from "@/app/_components/Icon"
 import Main from "@/app/_components/Layout/Main"
-import Log from "../_components/Log"
+
+import { useEffect } from "react"
+import { db } from "../_modules/firebase"
+import { addDoc, collection, getDocs } from "firebase/firestore"
 
 export default function Home() {
+  useEffect(() => {
+    const log = localStorage.getItem("cst9221.log")
+    if (!log) {
+      addDoc(collection(db, "app"), { date: new Date() }).then((result) => {
+        localStorage.setItem("cst9221.log", result.id)
+        console.log(`welcome your id is ${result.id}`)
+        getDocs(collection(db, "app")).then((result2) => {
+          console.log(result2.size)
+        })
+      })
+    } else {
+      getDocs(collection(db, "app")).then((result2) => {
+        console.log(result2.size)
+      })
+    }
+  }, [])
+
   return (
     <Main>
-      {typeof window !== "undefined" && <Log />}
       <h1 className="col-start-1 col-end-5 text-3xl font-semibold">최승태</h1>
       <h2 className="col-start-1 col-end-5 font-light">프론트엔드 엔지니어</h2>
 
