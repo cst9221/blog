@@ -29,8 +29,8 @@ export default function Home() {
 
   return (
     <Main>
-      <h1 className="col-start-1 col-end-5 text-3xl font-semibold">최승태</h1>
-      <h2 className="col-start-1 col-end-5 font-light">프론트엔드 엔지니어</h2>
+      <h1 className="col-start-1 col-end-5 text-5xl font-semibold">최승태</h1>
+      <h2 className="col-start-1 col-end-5 text-xl font-light">프론트엔드 엔지니어</h2>
 
       <div className="col-start-5 col-end-7 row-start-1 row-end-3 self-center">
         <ul>
@@ -86,27 +86,40 @@ export default function Home() {
       </div>
 
       <div className="col-start-1 col-end-7 mt-12">
-        <h3 className="text-xl">About Me</h3>
+        <h3 className="text-3xl font-bold">About Me</h3>
         <hr className="mt-4 mb-2" />
       </div>
 
       <div className="col-start-1 col-end-7 ">
-        <p className="text-xs">
+        <p className="text-base">
+          {/* <span className="text-lg">이유를 좇는 개발자입니다.</span>
+          <br />
+          주어진 일을 쳐내는 것이 아니라 이해관계자들과 <Mark>끊임없이 소통</Mark>하여 주어진 근본 문제를 찾아내고 해결해냅니다.
+          <br /> */}
+          <span className="text-xl">코드로 세상을 평정하다</span>
+          <br />
+          제 코드로 만들어진 서비스로 사용자들이 문제를 해결할 때 만족감을 느낍니다. 가까운 주변에서 발생하는 문제를 코드로써 하나씩 해결해나가며 세상을 평정하려 합니다.
+          <br />
+          <br />
+          <span className="text-xl">0 to 100</span>
+          <br />첫 직장의 첫 개발자로 합류하여 M&A까지 함께하며 넓은 경험을 하였습니다. 두번의 프로젝트 실패를 겪으며 <Mark>개발만을 위한 개발이 아닌 목표와 비즈니스를 위한 개발</Mark>을 배웠습니다. 1명의 개발자로 시작하여 현재는 12명이상의 개발 인원을 리드하고 있으며, 사업의 방향에 맞춰 서비스를 설계하고, 팀원이 주체적 개발자로 성장하도록 힘쓰고 있습니다.
+          <br />
+          {/* <br />
           깊이있게 탐구하는 걸 좋아합니다. 문제해결에 중심으로 다양한 기술들을 깊이있게 탐구하였
           <br />첫 직장의 첫 개발자로 합류하여 M&A까지 함께하며 넓은 경험을 하였습니다. <Mark>개발만을 위한 개발이 아닌 목표와 비즈니스를 위한 개발</Mark>
           <br />
-          1명에서 시작하녀 현재는 12명이상의 개발 인원을 리드하고 있으며, 사업의 방향에 맞춰 서비스를 설계하고, 팀원이 주체적 개발자로 성장하도록 힘쓰고 있습니다.
+          1명에서 시작하녀 현재는 12명이상의 개발 인원을 리드하고 있으며, 사업의 방향에 맞춰 서비스를 설계하고, 팀원이 주체적 개발자로 성장하도록 힘쓰고 있습니다. */}
         </p>
       </div>
 
       {/* WORK */}
       <div className="col-start-1 col-end-7 mt-12">
-        <h3 className="text-xl">Work</h3>
+        <h3 className="text-3xl font-bold">Works</h3>
         <hr className="mt-4 mb-2" />
       </div>
 
       <div className="col-start-1 col-end-2 ">
-        <div className="text-lg font-bold">프리딕션</div>
+        <div className="text-2xl font-bold">프리딕션</div>
       </div>
 
       <div className="col-start-2 col-end-7 ">
@@ -114,53 +127,57 @@ export default function Home() {
             href="https://predictionai.co.kr/"
             target="_blank"
           ></LinkButton> */}
-        <div className="text-2xs">누적 회원수 87만, MAU 15만, 누적 학습 기록수 6000만건의 에듀테크 서비스, 2년 연속 우수사원</div>
-        <div className="text-2xs">프론트엔드 개발, 개발 리드</div>
+        <div className="text-base">누적 회원수 87만, MAU 15만, 누적 학습 기록수 6000만건의 에듀테크 서비스, 2년 연속 우수사원</div>
+        <div className="text-base">프론트엔드 개발, 개발 리드</div>
 
         {/* 큐비 */}
-        <div className="border-l-2 pl-2 mt-4">
+        <div className="border-l-2 pl-2 mt-8">
           <div>
-            <span className="text-md font-bold mr-2">큐비</span>
-            <span className="text-2xs">2021.04 - 운영중</span>
+            <span className="text-2xl font-bold mr-2">큐비</span>
+            <span className="text-xs">2021.04 - 운영중</span>
           </div>
 
-          <p className="text-2xs text-center">인공지능 기반으로 내신 문제를 제공하고 풀 수 있는 서비스</p>
+          <p className="text-base">인공지능 기반으로 내신 문제를 제공하고 풀 수 있는 서비스</p>
 
-          <ul className="col-start-2 col-end-7 list-disc list-inside mb-4">
-            <li className="text-xs leading-5">
+          <ul className="col-start-2 col-end-7 list-disc list-inside mb-4 mt-2">
+            <li className="text-base">
               웹앱에서 웹과 앱이 통신하기 위한 Bridge 모듈화 <Mark>(링크)</Mark>
             </li>
-            <li className="text-xs leading-5">WebGL, GLSL을 통해 필기기능 구현</li>
-            <li className="text-xs leading-5">이미지 파일 추가 및 API 모듈파일 생성 자동화를 통한 반복 업무 자동화</li>
-            <li className="text-xs leading-5">Github Actions, AWS ECS를 활용해 프론트엔드 인프라를 구축</li>
-            <li className="text-xs leading-5">백오피스 사이트 개발로 조회, 관리, 푸시알림, 데이터 등 운영 개선</li>
+            <li className="text-base">WebGL, GLSL을 통해 필기기능 구현</li>
+            <li className="text-base">이미지 파일 추가 및 API 모듈파일 생성 자동화를 통한 반복 업무 자동화</li>
+            <li className="text-base">Github Actions, AWS ECS를 활용해 프론트엔드 인프라를 구축</li>
+            <li className="text-base">백오피스 사이트 개발로 조회, 관리, 푸시알림, 데이터 등 운영 개선</li>
           </ul>
         </div>
 
         {/* 라벨링 */}
-        <div className="border-l-2 pl-2 mt-4">
+        <div className="border-l-2 pl-2 mt-8">
           <div>
-            <span className="text-md font-bold mr-2">사내 문제 데이터 라벨링</span>
-            <span className="text-2xs">2020.12 - 운영중</span>
+            <span className="text-2xl font-bold mr-2">사내 문제 데이터 라벨링</span>
+            <span className="text-xs">2020.12 - 운영중</span>
           </div>
-          <p className="text-2xs">각종 형태로 존재하는 문제들을 DB화하기위한 프로젝트</p>
-          <ul className="col-start-2 col-end-7 list-disc list-inside mb-4">
-            <li className="text-xs leading-5">WYSIWYG Editor인 CKEditor와 커스텀 기능을 위한 Plugin을 개발</li>
-            <li className="text-xs leading-5">shortcuts 기능 구현 및 편의 기능 개선</li>
-            <li className="text-xs leading-5">데이터 및 인프라를 고려한 문제 데이터구조 설계 참여</li>
+
+          <p className="text-base">각종 형태로 존재하는 문제들을 DB화하기위한 프로젝트</p>
+
+          <ul className="col-start-2 col-end-7 list-disc list-inside mb-4 mt-2">
+            <li className="text-base">WYSIWYG Editor인 CKEditor와 커스텀 기능을 위한 Plugin을 개발</li>
+            <li className="text-base">shortcuts 기능 구현 및 편의 기능 개선</li>
+            <li className="text-base">데이터 및 인프라를 고려한 문제 데이터구조 설계 참여</li>
           </ul>
         </div>
 
         {/* 큐비북스 */}
-        <div className="border-l-2 pl-2 mt-4">
+        <div className="border-l-2 pl-2 mt-8">
           <div>
-            <span className="text-md font-bold mr-2">큐비북스</span>
-            <span className="text-2xs">2021.11 - 2022.05</span>
+            <span className="text-2xl font-bold mr-2">큐비북스</span>
+            <span className="text-xs">2021.11 - 2022.05</span>
           </div>
-          <p className="text-2xs">문제집 전용 ebook 서비스(ios)</p>
-          <ul className="col-start-2 col-end-7 list-disc list-inside mb-4">
-            <li className="text-xs leading-5">PencilKit을 이용한 필기 기능 구현</li>
-            <li className="text-xs leading-5">StoreKit을 활용한 문제별 필기 데이터 저장 기능 구현</li>
+
+          <p className="text-base">문제집 전용 ebook 서비스(ios)</p>
+
+          <ul className="col-start-2 col-end-7 list-disc list-inside mb-4 mt-2">
+            <li className="text-base">PencilKit을 이용한 필기 기능 구현</li>
+            <li className="text-base">StoreKit을 활용한 문제별 필기 데이터 저장 기능 구현</li>
           </ul>
         </div>
 
@@ -192,39 +209,39 @@ export default function Home() {
       </div>
 
       <div className="col-start-1 col-end-7 mt-12">
-        <h3 className="text-xl">Skill</h3>
+        <h3 className="text-3xl font-bold">Skills</h3>
         <hr className="mt-4 mb-2" />
       </div>
 
       <div className="col-start-1 col-end-2 ">
-        <div className="text-lg font-bold">FrontEnd</div>
+        <div className="text-2xl font-bold">FrontEnd</div>
       </div>
 
       <ul className="col-start-2 col-end-7 list-disc list-inside mb-4">
-        <li className="text-2xs">ES6, TypeScript, Swift</li>
-        <li className="text-2xs">NextJS(page, app), React, ReactNative</li>
-        <li className="text-2xs">Redux, RTK, React Query, Recoil</li>
-        <li className="text-2xs">tailwind, StyledComponent, emotion</li>
-        <li className="text-2xs">Canvas, WebGL(GLSL)</li>
+        <li className="text-base">ES6, TypeScript, Swift</li>
+        <li className="text-base">NextJS(page, app), React, ReactNative</li>
+        <li className="text-base">Redux, RTK, React Query, Recoil</li>
+        <li className="text-base">tailwind, StyledComponent, emotion</li>
+        <li className="text-base">Canvas, WebGL(GLSL)</li>
       </ul>
 
       <div className="col-start-1 col-end-2">
-        <div className="text-lg font-bold">DevOps</div>
+        <div className="text-2xl font-bold">DevOps</div>
       </div>
 
       <ul className="col-start-2 col-end-7 list-disc list-inside mb-4">
-        <li className="text-2xs">MySql, NoSql</li>
-        <li className="text-2xs">GitHub Actions, AWS Code Deploy</li>
-        <li className="text-2xs">AWS ECS, EC2, S3, ALB, SQS, RDS, DynamoDB, EFS</li>
-        <li className="text-2xs">pm2, Nginx</li>
+        <li className="text-base">MySql, NoSql</li>
+        <li className="text-base">GitHub Actions, AWS Code Deploy</li>
+        <li className="text-base">AWS ECS, EC2, S3, ALB, SQS, RDS, DynamoDB, EFS</li>
+        <li className="text-base">pm2, Nginx</li>
       </ul>
 
       <div className="col-start-1 col-end-2">
-        <div className="text-lg font-bold">BackEnd</div>
+        <div className="text-2xl font-bold">BackEnd</div>
       </div>
 
       <ul className="col-start-2 col-end-7 list-disc list-inside mb-4">
-        <li className="text-2xs">FastAPI, Express</li>
+        <li className="text-base">FastAPI, Express</li>
       </ul>
 
       <div className="col-start-1 col-end-7 ">작성일 : 23년 11월</div>
