@@ -1,34 +1,34 @@
 "use client"
 
-import Main from "@/app/_components/Layout/Main"
+// import Main from "@/app/_components/Layout/Main"
 
 import { useEffect } from "react"
 
-import WebGLEngine from "app/_modules/webgl"
-import { Html } from "next/document"
-import Link from "next/link"
-import Script from "next/script"
+// import WebGLEngine from "app/_modules/webgl"
+// import { Html } from "next/document"
+// import Link from "next/link"
+// import Script from "next/script"
 
 import GlslEditor from "@/app/_modules/glslEditor"
 import "@/app/_modules/glslEditor/css/glslEditor.css"
 import "@/app/_modules/glslEditor/css/ElectronApp.css"
+import dynamic from "next/dynamic"
 
 export default function GlslEditorPage() {
-  useEffect(() => {
-    // const engine = new WebGLEngine()
-    // engine.render()
-    const glslEditor = new GlslEditor("#glsl_editor", {
-      canvas_size: 500,
-      canvas_draggable: true,
-      canvas_resizable: true,
-      theme: "monokai",
-      watchHash: true,
-      fileDrops: true,
-      menu: true,
-    })
-
-    console.log(glslEditor)
-  }, [])
+  // useEffect(() => {
+  //   const engine = new WebGLEngine()
+  //   engine.render()
+  //   const glslEditor = new GlslEditor("#glsl_editor", {
+  //     canvas_size: 500,
+  //     canvas_draggable: true,
+  //     canvas_resizable: true,
+  //     theme: "monokai",
+  //     watchHash: true,
+  //     fileDrops: true,
+  //     menu: true,
+  //   })
+  //   console.log(glslEditor)
+  // }, [])
 
   return (
     <div
