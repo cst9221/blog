@@ -253,16 +253,16 @@ class WebGLEngine {
       }
 
       void main() {
-        // float delta = a_coords.w * u_time + a_coords.x;
-        // float x = mod(delta, u_resolution.x);
+        float delta = a_coords.w * u_time + a_coords.x;
+        float x = mod(delta, u_resolution.x);
 
-        //   v_pos = vec2(x, a_coords.y);
+          v_pos = vec2(x, a_coords.y);
 
-        // gl_Position = vec4(clip(v_pos), a_coords.z, 1);
-        // gl_PointSize = a_sizes * 1.;
+        gl_Position = vec4(clip(v_pos), a_coords.z, 1);
+        gl_PointSize = a_sizes * 1.;
         
 
-        // v_size = a_sizes;
+        v_size = a_sizes;
         
       }
       ` // end of vertexString
