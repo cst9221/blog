@@ -5,7 +5,7 @@ import { getStroke } from "perfect-freehand"
 
 class WebGLEngine {
   constructor(selector) {
-    this.content = document.querySelector(selector ?? "#cstdraw")
+    this.content = document.querySelector(selector ?? "#glsl-editor")
     this.width = Math.min(this.content.clientWidth, 1000)
     this.height = this.content.clientHeight
     this.count = { index: 1, value: 1000 }
@@ -124,7 +124,6 @@ class WebGLEngine {
     this.coords[jj + 2] = this.rects[index][2] // zOrder
     this.coords[jj + 3] = this.rects[index][3] // vel.x
     this.sizes[index] = ~~this.rects[index][4] // halfSize
-    console.log(this.coords)
   }
 
   spawnRectangles() {

@@ -1,8 +1,8 @@
 "use client"
 
-import Button from "@/app/_components/Button"
-import Mark from "@/app/_components/Highlight/Mark"
-import Icon from "@/app/_components/Icon"
+import Button from "@/app/_components/common/Button"
+import Mark from "@/app/_components/common/Highlight/Mark"
+import Icon from "@/app/_components/common/Icon"
 import Main from "@/app/_components/Layout/Main"
 
 import { useEffect } from "react"
