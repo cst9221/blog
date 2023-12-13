@@ -23,7 +23,7 @@ const GLSLEditor = () => {
     render()
   },[])
     
-    return <div id="cst-glsl-eidtor">로딩중입니다...</div>
+    return <div id="cst-glsl-eidtor"/>
 }
 
 export default GLSLEditor
