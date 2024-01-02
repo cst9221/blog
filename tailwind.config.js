@@ -21,5 +21,13 @@ module.exports = {
       }
     }
   },
-  plugins: []
+  plugins: [
+    ({addUtilities}) => {
+      addUtilities({
+        ".contain-paint": {
+          contain: "paint"
+        }
+      })
+    }
+  ]
 }

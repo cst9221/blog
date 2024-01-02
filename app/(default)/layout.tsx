@@ -25,7 +25,7 @@ export default function DefaultLayout({children}: {children: React.ReactNode}) {
         </nav>
       </header> */}
 
-      <main className="h-screen overflow-auto dark:bg-[#101010]">{children}</main>
+      <main className="">{children}</main>
     </>
   )
 }

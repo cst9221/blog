@@ -2,15 +2,24 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    appDir: true,
+    appDir: true
   },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/i,
-      use: ["@svgr/webpack"],
+      use: ["@svgr/webpack"]
     })
     return config
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "studiod.nu",
+        port: ""
+      }
+    ]
+  }
 }
 
 module.exports = nextConfig
