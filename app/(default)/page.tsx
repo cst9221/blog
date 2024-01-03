@@ -12,6 +12,7 @@ export default function HomePage() {
                 <Image
                   src="https://studiod.nu/_vercel/image?url=https://wp.studiod.nu/wp-content/uploads/2023/05/project-nyma-site-hero.jpg&w=1920&q=80"
                   layout="fill"
+                  alt=""
                 />
               </div>
             </div>
@@ -26,6 +27,7 @@ export default function HomePage() {
                 <Image
                   src="https://studiod.nu/_vercel/image?url=https://wp.studiod.nu/wp-content/uploads/2023/05/project-cobercokwartier-hero.jpg&w=1920&q=80"
                   layout="fill"
+                  alt=""
                 />
               </div>
             </div>
@@ -40,6 +42,7 @@ export default function HomePage() {
                 <Image
                   src="https://studiod.nu/_vercel/image?url=https://wp.studiod.nu/wp-content/uploads/2023/09/project-wolgadreef-utrecht-cover-01.jpg&w=1920&q=80"
                   layout="fill"
+                  alt=""
                 />
               </div>
             </div>
