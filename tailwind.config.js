@@ -11,13 +11,33 @@ module.exports = {
       sm: "576px"
       // 576px 보다 작음
     },
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      white: "#ffffff",
+      black: "#101010"
+    },
     extend: {
+      backgroundColor: {
+        primary: "var(--color-bg-primary)",
+        secondary: "var(--color-bg-secondary)"
+      },
+      colors: {
+        primary: "var(--color-bg-primary)",
+        secondary: "var(--color-bg-secondary)"
+      },
       fontSize: {
         "3xs": "0.5rem",
         "2xs": "0.625rem"
       },
       height: {
         screen: "100vh"
+      },
+      transitionDuration: {
+        2000: "2000ms",
+        3000: "3000ms",
+        4000: "4000ms",
+        5000: "5000ms"
       }
     }
   },

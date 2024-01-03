@@ -3,7 +3,7 @@ import Link from "next/link"
 export default function DefaultLayout({children}: {children: React.ReactNode}) {
   return (
     <>
-      {/* <header className="fixed top-0 left-0 w-full">
+      <header className="fixed top-0 left-0 w-full">
         <nav className="py-2 mx-4">
           <ol className="flex justify-center gap-2">
             <li className="inline-block">
@@ -23,9 +23,9 @@ export default function DefaultLayout({children}: {children: React.ReactNode}) {
             </li>
           </ol>
         </nav>
-      </header> */}
+      </header>
 
-      <main className="">{children}</main>
+      <main className="min-w-[672px] w-1/2 max-w-[1024px] bg-gray-400 m-auto">{children}</main>
     </>
   )
 }
