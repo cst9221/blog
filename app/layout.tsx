@@ -3,6 +3,7 @@ import type {Metadata} from "next"
 import {Inter} from "next/font/google"
 import "./globals.css"
 import SplashScreen from "@/src/components/Splash"
+import {ThemeProvider} from "@/src/components/ThemeCotext"
 
 const inter = Inter({subsets: ["latin"]})
 
@@ -22,9 +23,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="ko">
       <head></head>
       <body>
-        <SplashScreen />
-
-        {children}
+        <ThemeProvider>
+          <SplashScreen />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

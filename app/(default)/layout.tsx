@@ -1,3 +1,4 @@
+import {ThemeComponent, ThemeToggleComponent} from "@/src/components/ThemeComponent"
 import Link from "next/link"
 
 export default function DefaultLayout({children}: {children: React.ReactNode}) {
@@ -25,7 +26,12 @@ export default function DefaultLayout({children}: {children: React.ReactNode}) {
         </nav>
       </header>
 
-      <main className="min-w-[672px] w-1/2 max-w-[1024px] bg-gray-400 m-auto">{children}</main>
+      <main className="min-w-[672px] w-1/2 max-w-[1024px] bg-gray-400 m-auto">
+        <ThemeToggleComponent />
+        <hr />
+        <ThemeComponent />
+        {children}
+      </main>
     </>
   )
 }

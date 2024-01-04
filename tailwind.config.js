@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./app/**/*.{js,ts,jsx,tsx}", "./src/**"],
+  darkMode: "class",
   theme: {
     screens: {
       // 1280px 보다 큼
