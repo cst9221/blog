@@ -1,0 +1,316 @@
+# name에 공백 있으면 cli로 실행할 때 난감함..ㅠ
+name: Production Deploy
+
+on:
+  # 원래 여기에 push 이벤트가 들어갔어야 하는데 `workflow_dispatch`라는 키워드가 들어갔죠?
+  # 즉, "workflow를 수동으로 trigger시킬게"라는 의미입니다.
+  workflow_dispatch:
+    # 값도 받을 수 있습니다. region, env 말고 원하시는 값들을 받을 수도 있겠죠??
+    inputs:
+      deploy-webview:
+        default: true
+        type: boolean
+      deploy-web:
+        default: false
+        type: boolean
+      deploy-cms:
+        default: false
+        type: boolean
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECS_CLUSTER: fe-qb-cluster
+
+jobs:
+  # WEBVIEW
+  build-webview:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.deploy-webview }}
+    name: WEBVIEW - Build and push image to Amazon ECR
+    environment:
+      name: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # AWS 로그인
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # AWS ECR 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # 빌드에 필요한 .env파일 생성
+      - name: Create .env file
+        run: |
+          echo "DataBase"
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+
+          echo "AWS"
+          echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+
+          echo "QB"
+          echo "API_URL=${{ vars.API_URL }}" >> .env
+          echo "LMS_API_URL=${{ vars.LMS_API_URL }}" >> .env
+          echo "BUILD_API_URL=${{ vars.BUILD_API_URL }}" >> .env
+          echo "QB_HOME_URL=${{ vars.QB_HOME_URL }}" >> .env
+          echo "LMS_URL=${{ vars.LMS_URL }}" >> .env
+
+          echo "Third Party"
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+          echo "META_CLIENT_ID=${{ secrets.META_CLIENT_ID }}" >> .env
+          echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
+          echo "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" >> .env
+          echo "IMP_UID=${{ secrets.IMP_UID }}" >> .env
+          echo "STORE_ID=${{ secrets.STORE_ID }}" >> .env
+          echo "NEXT_PUBLIC_IMP_UID=${{ secrets.IMP_UID }}" >> .env
+
+          echo "Sentry"
+          echo "NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
+          echo "SENTRY_AUTH_TOKEN=${{ vars.SENTRY_AUTH_TOKEN }}" >> .env
+
+      # Docker 이미지 빌드, 태깅 후 AWS ECR에 Push
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          ECR_REPOSITORY: fe-qb-webview-production
+        run: |
+          docker build -f .github/dockerfiles/webview.Dockerfile --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      # ECS 작업 정의 생성
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        env:
+          ECS_TASK_DEFINITION: .github/task-definitions/webview.production.json
+          CONTAINER_NAME: fe-qb-webview-production
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+          # image: ${{ steps.build-image.outputs.image }}
+
+      # 작업 정의 파일을 ECS 서비스에 반영x
+      - if: success()
+        name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        env:
+          ECS_SERVICE: fe-qb-webview-production-srvc
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      # Github Tag 생성
+      - if: success()
+        name: Create Tag
+        run: |
+          TAG=$(TZ=Asia/Seoul date +'%Y%m%d%H%M%S')
+          git tag $TAG
+          git push origin $TAG
+
+  # WEB
+  build-web:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.deploy-web }}
+    name: WEB - Build and push image to Amazon ECR
+    environment:
+      name: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # AWS 로그인
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # AWS ECR 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # 빌드에 필요한 .env파일 생성
+      - name: Create .env file
+        run: |
+          echo "DataBase"
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+
+          echo "AWS"
+          echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+
+          echo "QB"
+          echo "API_URL=${{ vars.API_URL }}" >> .env
+          echo "LMS_API_URL=${{ vars.LMS_API_URL }}" >> .env
+          echo "BUILD_API_URL=${{ vars.BUILD_API_URL }}" >> .env
+          echo "QB_HOME_URL=${{ vars.QB_HOME_URL }}" >> .env
+          echo "LMS_URL=${{ vars.LMS_URL }}" >> .env
+
+          echo "Third Party"
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+          echo "META_CLIENT_ID=${{ secrets.META_CLIENT_ID }}" >> .env
+          echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
+          echo "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" >> .env
+          echo "IMP_UID=${{ secrets.IMP_UID }}" >> .env
+          echo "STORE_ID=${{ secrets.STORE_ID }}" >> .env
+          echo "NEXT_PUBLIC_IMP_UID=${{ secrets.IMP_UID }}" >> .env
+
+          echo "Sentry"
+          echo "NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
+          echo "SENTRY_AUTH_TOKEN=${{ vars.SENTRY_AUTH_TOKEN }}" >> .env
+
+      # Docker 이미지 빌드, 태깅 후 AWS ECR에 Push
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          ECR_REPOSITORY: fe-qb-web-ecr
+        run: |
+          docker build -f .github/dockerfiles/web.Dockerfile --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      # ECS 작업 정의 생성
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        env:
+          ECS_TASK_DEFINITION: .github/task-definitions/web.task-definition.json
+          CONTAINER_NAME: fe-qb-web-container
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+          # image: ${{ steps.build-image.outputs.image }}
+
+      # 작업 정의 파일을 ECS 서비스에 반영x
+      - if: success()
+        name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        env:
+          ECS_SERVICE: fe-qb-web-srvc
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+  # CMS
+  build-cms:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.deploy-cms }}
+    name: CMS - Build and push image to Amazon ECR
+    environment:
+      name: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # AWS 로그인
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # AWS ECR 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # 빌드에 필요한 .env파일 생성
+      - name: Create .env file
+        run: |
+          echo "DataBase"
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+
+          echo "AWS"
+          echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+
+          echo "QB"
+          echo "API_URL=${{ vars.API_URL }}" >> .env
+          echo "LMS_API_URL=${{ vars.LMS_API_URL }}" >> .env
+          echo "BUILD_API_URL=${{ vars.BUILD_API_URL }}" >> .env
+          echo "QB_HOME_URL=${{ vars.QB_HOME_URL }}" >> .env
+          echo "LMS_URL=${{ vars.LMS_URL }}" >> .env
+
+          echo "Third Party"
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+          echo "META_CLIENT_ID=${{ secrets.META_CLIENT_ID }}" >> .env
+          echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
+          echo "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" >> .env
+          echo "IMP_UID=${{ secrets.IMP_UID }}" >> .env
+          echo "STORE_ID=${{ secrets.STORE_ID }}" >> .env
+          echo "NEXT_PUBLIC_IMP_UID=${{ secrets.IMP_UID }}" >> .env
+
+          echo "Sentry"
+          echo "NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
+          echo "SENTRY_AUTH_TOKEN=${{ vars.SENTRY_AUTH_TOKEN }}" >> .env
+
+      # Docker 이미지 빌드, 태깅 후 AWS ECR에 Push
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          ECR_REPOSITORY: cms
+        run: |
+          docker build -f .github/dockerfiles/cms.Dockerfile --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      # ECS 작업 정의 생성
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        env:
+          ECS_TASK_DEFINITION: .github/task-definitions/cms.task-definition.json
+          CONTAINER_NAME: cms-container
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+          # image: ${{ steps.build-image.outputs.image }}
+
+      # 작업 정의 파일을 ECS 서비스에 반영x
+      - if: success()
+        name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        env:
+          ECS_SERVICE: fe-qb-cms-service
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true

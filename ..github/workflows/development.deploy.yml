@@ -1,0 +1,46 @@
+name: Development Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      install:
+        default: false
+        type: boolean
+
+jobs:
+  # Devleopment Environment
+  deploy-webview-development:
+    runs-on: ubuntu-latest
+    name: Deploy to EC2
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Create script file.
+        run: |
+          echo '#!/bin/bash' > deploy.sh
+          echo 'cd /home/ubuntu/FE-QB-Workspace' >> deploy.sh
+          echo 'git remote set-url origin https://cst9221:${{ secrets.GH_TOKEN }}@github.com/PREDICTIONAI/FE-QB-Workspace.git' >> deploy.sh
+          echo 'git pull' >> deploy.sh
+          echo 'if [ "$INSTALL_DEPENDENCIES" = true ]; then' >> deploy.sh
+          echo '  npm install' >> deploy.sh
+          echo 'fi' >> deploy.sh
+          echo 'npm run dev' >> deploy.sh
+        shell: bash
+
+      - name: Copy script to remote server
+        uses: appleboy/scp-action@master
+        with:
+          host: ec2-3-34-129-2.ap-northeast-2.compute.amazonaws.com
+          username: ubuntu
+          key: ${{ secrets.SSH_FRONT_SERVER }}
+          source: deploy.sh
+          target: /home/ubuntu/
+
+      - name: Run scripts in server
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_FRONT_SERVER }}
+          host: ec2-3-34-129-2.ap-northeast-2.compute.amazonaws.com
+          username: ubuntu
+          script: "INSTALL_DEPENDENCIES=${{ inputs.install }} bash /home/ubuntu/deploy.sh"

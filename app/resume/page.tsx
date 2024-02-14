@@ -5,15 +5,15 @@ import Mark from "@/app/_components/common/Highlight/Mark"
 import Icon from "@/app/_components/common/Icon"
 import Main from "@/app/_components/Layout/Main"
 
-import { useEffect } from "react"
-import { db } from "../_modules/firebase"
-import { addDoc, collection, getDocs } from "firebase/firestore"
+import {useEffect} from "react"
+import {db} from "@/app/_modules/firebase"
+import {addDoc, collection, getDocs} from "firebase/firestore"
 
 export default function Home() {
   useEffect(() => {
     const log = localStorage.getItem("cst9221.log")
     if (!log) {
-      addDoc(collection(db, "app"), { date: new Date() }).then((result) => {
+      addDoc(collection(db, "app"), {date: new Date()}).then((result) => {
         localStorage.setItem("cst9221.log", result.id)
         console.log(`welcome your id is ${result.id}`)
         getDocs(collection(db, "app")).then((result2) => {
@@ -35,65 +35,33 @@ export default function Home() {
       <div className="col-start-5 col-end-7 row-start-1 row-end-3 self-center">
         <ul>
           <li>
-            <a
-              href="https://github.com/cst9221"
-              target="#"
-            >
+            <a href="https://github.com/cst9221" target="#">
               <Button>
-                <Icon
-                  name="github-mark-simple"
-                  width="20"
-                  height="20"
-                  className="inline mr-2"
-                />
+                <Icon name="github-mark-simple" width="20" height="20" className="inline mr-2" />
                 https://github.com/cst9221
               </Button>
             </a>
           </li>
           <li>
-            <a
-              href="https://velog.io/@chltmdxo3"
-              target="#"
-            >
+            <a href="https://velog.io/@chltmdxo3" target="#">
               <Button>
-                <Icon
-                  name="velog-mark"
-                  width="20"
-                  height="20"
-                  className="inline mr-2"
-                />
+                <Icon name="velog-mark" width="20" height="20" className="inline mr-2" />
                 https://velog.io/@chltmdxo3
               </Button>
             </a>
           </li>
           <li>
-            <a
-              href="https://cst9221.vercel.app"
-              target="#"
-            >
+            <a href="https://cst9221.vercel.app" target="#">
               <Button>
-                <Icon
-                  name="site"
-                  width="20"
-                  height="20"
-                  className="inline mr-2"
-                />
+                <Icon name="site" width="20" height="20" className="inline mr-2" />
                 https://cst9221.vercel.app
               </Button>
             </a>
           </li>
           <li>
-            <a
-              href="mailto:chltmdxo3@gmail.com"
-              target="#"
-            >
+            <a href="mailto:chltmdxo3@gmail.com" target="#">
               <Button>
-                <Icon
-                  name="email"
-                  width="20"
-                  height="20"
-                  className="inline mr-2"
-                />
+                <Icon name="email" width="20" height="20" className="inline mr-2" />
                 chltmdxo3@gmail.com
               </Button>
             </a>
@@ -118,7 +86,9 @@ export default function Home() {
           가까이에서 발생하는 문제들을 해결해 나가며 즐거움을 느낍니다. 스스로와 사용자들이 만족하는 모습을 상상할 때, 즐겁게 코드를 작성합니다.
           <br />
           <br />
-          스타트업의 첫 번째 개발자로 합류하여 M&A까지 폭 넓은 경험을 했습니다. 두 번의 프로젝트 실패를 겪으며 개발만을 위한 개발이 아닌, 목표와 <Mark>비즈니스를 위한 개발</Mark>을 배웠습니다. 현재는 13명 이상의 개발 인원을 리드하고 있으며, 사업의 방향에 맞춰 서비스를 설계하고, 팀원이 주체적인 개발자로 성장하도록 힘쓰고 있습니다.
+          스타트업의 첫 번째 개발자로 합류하여 M&A까지 폭 넓은 경험을 했습니다. 두 번의 프로젝트 실패를 겪으며 개발만을 위한 개발이 아닌, 목표와{" "}
+          <Mark>비즈니스를 위한 개발</Mark>을 배웠습니다. 현재는 13명 이상의 개발 인원을 리드하고 있으며, 사업의 방향에 맞춰 서비스를 설계하고, 팀원이
+          주체적인 개발자로 성장하도록 힘쓰고 있습니다.
         </p>
       </div>
 

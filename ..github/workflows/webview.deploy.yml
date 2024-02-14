@@ -1,0 +1,282 @@
+name: Webview Deploy
+
+on:
+  push:
+    paths:
+      - "apps/fe-qb-webview/**"
+      - ".github/dockerfiles/webview.Dockerfile"
+      - ".github/workflows/webview.deploy.yml"
+      - ".github/task-definitions/webview.*.json"
+
+env:
+  # AWS
+  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  # Sentry
+  NEXT_PUBLIC_SENTRY_DSN: ${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
+  SENTRY_AUTH_TOKEN: ${{ vars.SENTRY_AUTH_TOKEN }}
+
+  # Third Party
+  KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
+  META_CLIENT_ID: ${{ secrets.META_CLIENT_ID }}
+  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+  NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+  IMP_UID: ${{ secrets.IMP_UID }}
+  STORE_ID: ${{ secrets.STORE_ID }}
+
+  # PROD
+  # AWS
+  PROD_AWS_REGION: ap-northeast-2
+  PROD_ECR_REPOSITORY: fe-qb-webview-production
+  PROD_ECS_CLUSTER: fe-qb-cluster
+  PROD_ECS_SERVICE: fe-qb-webview-production-srvc
+  PROD_ECS_TASK_DEFINITION: .github/task-definitions/webview.production.json
+  PROD_CONTAINER_NAME: fe-qb-webview-production
+
+  # DataBase
+  PROD_DB_USER: ${{ secrets.PROD_DB_USER }}
+  PROD_DB_PASSWORD: ${{ secrets.PROD_DB_PASSWORD }}
+  PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
+  PROD_DB_HOST: ${{ secrets.PROD_DB_HOST }}
+  PROD_DB_NAME: ${{ secrets.PROD_DB_NAME }}
+  PROD_DB_PORT: ${{ secrets.PROD_DB_PORT }}
+
+  # QB
+  PROD_API_URL: ${{ vars.PROD_API_URL }}
+  PROD_LMS_API_URL: ${{ vars.PROD_LMS_API_URL }}
+  PROD_BUILD_API_URL: ${{ vars.PROD_BUILD_API_URL }}
+
+  PROD_QB_HOME_URL: ${{ vars.PROD_QB_HOME_URL }}
+  PROD_LMS_URL: ${{ vars.PROD_LMS_URL }}
+
+  # STAGE
+  # AWS
+  STAGE_AWS_REGION: ap-northeast-2
+  STAGE_ECR_REPOSITORY: fe-qb-webview-staging
+  STAGE_ECS_CLUSTER: fe-qb-cluster
+  STAGE_ECS_SERVICE: fe-qb-webview-staging-srvc
+  STAGE_ECS_TASK_DEFINITION: .github/task-definitions/webview.staging.json
+  STAGE_CONTAINER_NAME: fe-qb-webview-staging
+
+  # DataBase
+  STAGE_DB_USER: ${{ secrets.STAGE_DB_USER }}
+  STAGE_DB_PASSWORD: ${{ secrets.STAGE_DB_PASSWORD }}
+  STAGE_DB_URL: ${{ secrets.STAGE_DB_URL }}
+  STAGE_DB_HOST: ${{ secrets.STAGE_DB_HOST }}
+  STAGE_DB_NAME: ${{ secrets.STAGE_DB_NAME }}
+  STAGE_DB_PORT: ${{ secrets.STAGE_DB_PORT }}
+
+  # QB
+  STAGE_API_URL: ${{ vars.STAGE_API_URL }}
+  STAGE_LMS_API_URL: ${{ vars.STAGE_LMS_API_URL }}
+  STAGE_BUILD_API_URL: ${{ vars.STAGE_BUILD_API_URL }}
+
+  STAGE_QB_HOME_URL: ${{ vars.STAGE_QB_HOME_URL }}
+  STAGE_LMS_URL: ${{ vars.STAGE_LMS_URL }}
+
+  # DEV
+  DEV_AWS_REGION: ap-northeast-2
+  DEV_ECR_REPOSITORY: fe-qb-webview-staging
+  DEV_ECS_CLUSTER: fe-qb-cluster
+  DEV_ECS_SERVICE: fe-qb-webview-staging-srvc
+  DEV_ECS_TASK_DEFINITION: .github/task-definitions/webview.staging.json
+  DEV_CONTAINER_NAME: fe-qb-webview-staging
+
+  # DataBase
+  DEV_DB_USER: ${{ secrets.DEV_DB_USER }}
+  DEV_DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
+  DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
+  DEV_DB_HOST: ${{ secrets.DEV_DB_HOST }}
+  DEV_DB_NAME: ${{ secrets.DEV_DB_NAME }}
+  DEV_DB_PORT: ${{ secrets.DEV_DB_PORT }}
+
+  # QB
+  DEV_API_URL: ${{ vars.DEV_API_URL }}
+  DEV_LMS_API_URL: ${{ vars.DEV_LMS_API_URL }}
+  DEV_BUILD_API_URL: ${{ vars.DEV_BUILD_API_URL }}
+
+  DEV_QB_HOME_URL: ${{ vars.DEV_QB_HOME_URL }}
+  DEV_LMS_URL: ${{ vars.DEV_LMS_URL }}
+
+jobs:
+  build-prod:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    name: Production - Build and push image to Amazon ECR
+    steps:
+      # 현재 Repo의 소스를 clone
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # ENV File 생성
+      - name: Create .env file
+        run: |
+          echo "DataBase"
+          echo "DB_USER=$PROD_DB_USER" >> .env
+          echo "DB_PASSWORD=$PROD_DB_PASSWORD" >> .env
+          echo "DB_URL=$PROD_DB_URL" >> .env
+          echo "DB_HOST=$PROD_DB_HOST" >> .env
+          echo "DB_NAME=$PROD_DB_NAME" >> .env
+          echo "DB_PORT=$PROD_DB_PORT" >> .env
+
+          echo "AWS"
+          echo "AWS_ACCESS_KEY=$AWS_ACCESS_KEY" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
+
+          echo "QB"
+          echo "API_URL=$PROD_API_URL" >> .env
+          echo "LMS_API_URL=$PROD_LMS_API_URL" >> .env
+          echo "BUILD_API_URL=$PROD_BUILD_API_URL" >> .env
+
+          echo "QB_HOME_URL=$PROD_QB_HOME_URL" >> .env
+          echo "LMS_URL=$PROD_LMS_URL" >> .env
+
+          echo "Third Party"
+          echo "KAKAO_CLIENT_ID=$KAKAO_CLIENT_ID" >> .env
+          echo "META_CLIENT_ID=$META_CLIENT_ID" >> .env
+          echo "NAVER_CLIENT_ID=$NAVER_CLIENT_ID" >> .env
+          echo "NAVER_CLIENT_SECRET=$NAVER_CLIENT_SECRET" >> .env
+          echo "IMP_UID=$IMP_UID" >> .env
+          echo "STORE_ID=$STORE_ID" >> .env
+          echo "NEXT_PUBLIC_IMP_UID=$IMP_UID" >> .env
+
+          echo "Sentry"
+          echo "NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN" >> .env
+          echo "SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" >> .env
+
+      # AWS 로그인
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.PROD_AWS_REGION }}
+
+      # AWS ECR 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Docker 이미지 빌드, 태깅 후 AWS ECR에 PUSH
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f .github/dockerfiles/webview.Dockerfile --tag $ECR_REGISTRY/$PROD_ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$PROD_ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$PROD_ECR_REPOSITORY:$IMAGE_TAG"
+
+      # ECS 작업 정의 생성
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.PROD_ECS_TASK_DEFINITION }}
+          container-name: ${{ env.PROD_CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      # 작업 정의 파일을 ECS 서비스에 반영x
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.PROD_ECS_SERVICE }}
+          cluster: ${{ env.PROD_ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      # Github Tag 생성
+      - name: Create Tag
+        if: ${{ success() }}
+        run: |
+          TAG=$(TZ=Asia/Seoul date +'%Y%m%d%H%M%S')
+          git tag $TAG
+          git push origin $TAG
+
+  build-stage:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/stage'
+    name: Staging - Build and push image to Amazon ECR
+    steps:
+      # 현재 Repo의 소스를 clone
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+          echo "DataBase"
+          echo "DB_USER=$STAGE_DB_USER" >> .env
+          echo "DB_PASSWORD=$STAGE_DB_PASSWORD" >> .env
+          echo "DB_URL=$STAGE_DB_URL" >> .env
+          echo "DB_HOST=$STAGE_DB_HOST" >> .env
+          echo "DB_NAME=$STAGE_DB_NAME" >> .env
+          echo "DB_PORT=$STAGE_DB_PORT" >> .env
+
+          echo "AWS"
+          echo "AWS_ACCESS_KEY=$AWS_ACCESS_KEY" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
+
+          echo "QB"
+          echo "API_URL=$STAGE_API_URL" >> .env
+          echo "LMS_API_URL=$STAGE_LMS_API_URL" >> .env
+          echo "BUILD_API_URL=$STAGE_BUILD_API_URL" >> .env
+
+          echo "QB_HOME_URL=$STAGE_QB_HOME_URL" >> .env
+          echo "LMS_URL=$STAGE_LMS_URL" >> .env
+
+          echo "Third Party"
+          echo "KAKAO_CLIENT_ID=$KAKAO_CLIENT_ID" >> .env
+          echo "META_CLIENT_ID=$META_CLIENT_ID" >> .env
+          echo "NAVER_CLIENT_ID=$NAVER_CLIENT_ID" >> .env
+          echo "NAVER_CLIENT_SECRET=$NAVER_CLIENT_SECRET" >> .env
+          echo "IMP_UID=$IMP_UID" >> .env
+          echo "STORE_ID=$STORE_ID" >> .env
+          echo "NEXT_PUBLIC_IMP_UID=$IMP_UID" >> .env
+
+          echo "Sentry"
+          echo "NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN" >> .env
+          echo "SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" >> .env
+
+      # AWS 로그인
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.STAGE_AWS_REGION }}
+
+      # AWS ECR 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Docker 이미지 빌드, 태깅 후 AWS ECR에 PUSH
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f .github/dockerfiles/webview.Dockerfile --tag $ECR_REGISTRY/$STAGE_ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$STAGE_ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$STAGE_ECR_REPOSITORY:$IMAGE_TAG"
+
+      # ECS 작업 정의 생성
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.STAGE_ECS_TASK_DEFINITION }}
+          container-name: ${{ env.STAGE_CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      # 작업 정의 파일을 ECS 서비스에 반영x
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.STAGE_ECS_SERVICE }}
+          cluster: ${{ env.STAGE_ECS_CLUSTER }}
+          wait-for-service-stability: true

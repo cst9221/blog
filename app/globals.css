@@ -127,6 +127,48 @@ mark {
   --sixth: #f1916d;
 }
 
+@layer components {
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    position: relative;
+    scroll-margin: calc(80px + 1rem);
+  }
+  .prose h1 > a,
+  .prose h2 > a,
+  .prose h3 > a,
+  .prose h4 > a,
+  .prose h5 > a,
+  .prose h6 > a {
+    position: absolute;
+    right: 100%;
+  }
+  .prose h1 > a > span.icon.icon-link:before,
+  .prose h2 > a > span.icon.icon-link:before,
+  .prose h3 > a > span.icon.icon-link:before,
+  .prose h4 > a > span.icon.icon-link:before,
+  .prose h5 > a > span.icon.icon-link:before,
+  .prose h6 > a > span.icon.icon-link:before {
+    content: "🔗";
+    display: none;
+    width: 1em;
+    height: 1em;
+    font-size: 0.8em;
+    vertical-align: middle;
+  }
+  .prose h1:hover > a > span.icon.icon-link:before,
+  .prose h2:hover > a > span.icon.icon-link:before,
+  .prose h3:hover > a > span.icon.icon-link:before,
+  .prose h4:hover > a > span.icon.icon-link:before,
+  .prose h5:hover > a > span.icon.icon-link:before,
+  .prose h6:hover > a > span.icon.icon-link:before {
+    display: inline-block;
+  }
+}
+
 /* grid */
 /* .grid {
   display: grid;

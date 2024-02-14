@@ -12,12 +12,12 @@ module.exports = {
       sm: "576px"
       // 576px 보다 작음
     },
-    colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      white: "#ffffff",
-      black: "#101010"
-    },
+    // colors: {
+    //   transparent: "transparent",
+    //   current: "currentColor",
+    //   white: "#ffffff",
+    //   black: "#101010"
+    // },
     extend: {
       backgroundColor: {
         primary: "var(--color-bg-primary)",
@@ -49,6 +49,7 @@ module.exports = {
           contain: "paint"
         }
       })
-    }
+    },
+    require("@tailwindcss/typography")
   ]
 }

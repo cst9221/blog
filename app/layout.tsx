@@ -2,8 +2,7 @@ import type {Metadata} from "next"
 
 import {Inter} from "next/font/google"
 import "./globals.css"
-import SplashScreen from "@/src/components/Splash"
-import {ThemeProvider} from "@/src/components/ThemeCotext"
+import Mousefollow from "./_components/feature/Mousefollow"
 
 const inter = Inter({subsets: ["latin"]})
 
@@ -22,11 +21,9 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="ko">
       <head></head>
-      <body>
-        <ThemeProvider>
-          <SplashScreen />
-          {children}
-        </ThemeProvider>
+      <body className="bg-[#E5E5E5] bg-[url('/images/noise.png')]">
+        {children}
+        <Mousefollow />
       </body>
     </html>
   )

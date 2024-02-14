@@ -1,0 +1,102 @@
+name: CMS # Action 이름
+
+on:
+  # 원래 여기에 push 이벤트가 들어갔어야 하는데 `workflow_dispatch`라는 키워드가 들어갔죠?
+  # 즉, "workflow를 수동으로 trigger시킬게"라는 의미입니다.
+  workflow_dispatch:
+    # 값도 받을 수 있습니다. region, env 말고 원하시는 값들을 받을 수도 있겠죠?
+    inputs:
+      environment:
+        required: true
+        type: environment
+
+env:
+  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: cms
+  ECS_CLUSTER: fe-qb-cluster
+  ECS_SERVICE: fe-qb-cms-service
+  ECS_TASK_DEFINITION: .github/task-definitions/cms.task-definition.json # 작업 정의 템플릿 파일 이름
+  CONTAINER_NAME: cms-container
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # 이미지 빌드하고 ECR push
+    name: ${{ inputs.environment }} - Build and push image to Amazon ECR
+    steps:
+      # 현재 Repo의 소스를 clone
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # AWS 로그인
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # AWS ECR 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # AWS ECR에 이미지가 있는지 체크, 있으면 안해도 됨~
+      # Docker 이미지 빌드, 태깅 후 AWS ECR에 PUSH
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Check if ECR image exists
+          IMAGE_META=$( aws ecr describe-images --repository-name $ECR_REPOSITORY | grep $IMAGE_TAG | sed 's/^ *//;s/ *$//;s/"//g' )
+
+          if [[ $IMAGE_META != $IMAGE_TAG ]]; then
+            echo "$IMAGE_META not found start build"
+            docker build -f .github/dockerfiles/cms.Dockerfile --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          else  
+            echo "$IMAGE_META found skipping build"
+          fi
+
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      # task-definition 수정하기 위한 jq 라이브러리, ecr check시에도 사용
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      # input에 따라 s3의 {{ environment }}.env파일을 다르게 가져옴
+      - name: Modify Task Definition JSON
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: |
+          # Replace "NEW_ARN" with the desired new image value
+          NEW_ARN="arn:aws:s3:::fe-qb/$ENVIRONMENT.env"
+
+          # Use jq to update the image value in the JSON file
+          jq --arg NEW_ARN "$NEW_ARN" '.containerDefinitions[0].environmentFiles[0].value = $NEW_ARN' .github/task-definitions/cms.task-definition.json > target-task-definition.json
+
+          # Rename the modified file back to the original file
+          mv target-task-definition.json .github/task-definitions/cms.task-definition.json
+
+      # ECS 작업 정의 생성
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      # 작업 정의 파일을 ECS 서비스에 반영
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
