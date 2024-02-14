@@ -1,15 +1,13 @@
-import C from "public/images/ico-c.svg"
 import Head from "./head"
 import Projects from "./projects"
 import Career from "./career"
+import C from "./c"
 
 const DefaultPage = () => {
   return (
     <>
       <div className="relative ">
-        <div id="c" className="fixed top-1/2 left-4 -translate-y-1/2 z-10">
-          <C />
-        </div>
+        <C />
 
         <Head />
 
