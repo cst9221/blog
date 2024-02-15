@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    appDir: true
+    appDir: true,
+    scrollRestoration: true
   },
   webpack: (config) => {
     config.module.rules.push({

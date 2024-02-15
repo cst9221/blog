@@ -3,6 +3,9 @@
 import {useRef, useState, HTMLAttributes, ReactNode, useEffect, useMemo} from "react"
 import Image from "next/image"
 import {motion} from "framer-motion"
+import Link from "next/link"
+import IconLink from "public/images/ico-link.svg"
+import IconChevronRightSmall from "public/images/ico-chevron-right-small.svg"
 
 const Career = () => {
   const [activateIndex, setActivateIndex] = useState(0)
@@ -60,23 +63,52 @@ const Career = () => {
             <div className="flex h-fit">
               <div className="w-[4px] h-[1.75em] bg-black mr-2" />
               <div className="font-bold text-lg">서비스 개발</div>
-              <div className="flex justify-end items-end ml-4 text-sm text-gray-400">2019.09 ~ </div>
+              <div className="flex justify-end items-end ml-4 text-sm text-gray-400">2020.09 ~ </div>
             </div>
+            {/* "https://www.wadiz.kr/web/campaign/detail/84041" */}
             <ul className="mt-4">
-              <li className="list-disc ml-4 text-base">큐비 내신 연구소 - 내신특화 문제은행 서비스</li>
-              <li className="list-disc ml-4 text-base">
-                Admin(백오피스) - B2C 서비스의 콘텐츠 관리, 운영 자동화 및 데이터 조회 등 운영 효율 개선 서비스
+              <li className="list-disc ml-4 text-sm">
+                <Link href="/career/lms" className="flex items-center hover:text-[#FF4800] transition-colors">
+                  큐비 내신 연구소 - 내신특화 문제은행 서비스
+                </Link>
               </li>
-              <li className="list-disc ml-4 text-base">큐비북스 - 시중 문제집들을 빠르고 간편하게 앱에서 풀 수 있게하는 서비스</li>
-              <li className="list-disc ml-4 text-base">큐비 - 인공지능 기반 중고등학생 내신대비 문제풀이 서비스</li>
-              <li className="list-disc ml-4 text-base">오트밀 - 사용자의 취약점을 AI로 분석하고, 그에 따른 개념을 학습하는 오답 관리 앱 서비스</li>
-              <li className="list-disc ml-4 text-base">사내 문제 라벨링 틀 - 중,고등학교 문제를 DB화하기위한 사내 라벨링 툴</li>
-              <li className="list-disc ml-4 text-base">
-                <a href="https://www.wadiz.kr/web/campaign/detail/84041" target="_blank">
-                  <u>반송이 🔗</u>
-                </a>{" "}
-                - 리뷰 기반의 맞춤 제품 분석, 상품 추천 및 판매 서비스
+
+              <li className="list-disc mt-2 ml-4 text-sm">
+                <Link href="/career/cms" className="flex items-center hover:text-[#FF4800] transition-colors">
+                  Admin(백오피스) - B2C 서비스의 콘텐츠 관리, 운영 자동화 및 데이터 조회 등 운영 서비스
+                </Link>
               </li>
+
+              <li className="list-disc mt-2 ml-4 text-sm">
+                <Link href="/career/qbbooks" className="flex items-center hover:text-[#FF4800] transition-colors">
+                  큐비북스 - 시중 문제집들을 빠르고 간편하게 앱에서 풀 수 있게하는 서비스
+                </Link>
+              </li>
+
+              <li className="list-disc mt-2 ml-4 text-sm">
+                <Link href="/career/qb" className="flex items-center hover:text-[#FF4800] transition-colors">
+                  큐비 - 인공지능 기반 중고등학생 내신대비 문제풀이 서비스
+                </Link>
+              </li>
+
+              <li className="list-disc mt-2 ml-4 text-sm">
+                <Link href="/career/oatmeal" className="flex items-center hover:text-[#FF4800] transition-colors">
+                  오트밀 - 사용자의 취약점을 AI로 분석하고, 부족한 개념을 학습하는 오답 관리 앱 서비스
+                </Link>
+              </li>
+
+              <li className="list-disc mt-2 ml-4 text-sm">
+                <Link href="/career/labeling" className="flex items-center hover:text-[#FF4800] transition-colors">
+                  사내 문제 라벨링 툴 - 중,고등학교 문제를 DB화하기위한 사내 라벨링 툴
+                </Link>
+              </li>
+
+              <li className="list-disc mt-2 ml-4 text-sm">
+                <Link href="/career/bansong" className="flex items-center hover:text-[#FF4800] transition-colors">
+                  반송이 - 리뷰 기반의 맞춤 제품 분석, 상품 추천 및 판매 서비스
+                </Link>
+              </li>
+
               {/* 
               고객 유입 흐름 파악을 위한 업무 프로세스 관련 데이터 대규모 연동 (Funnel)
               그림 픽업/설치/철수/반납 일정의 관리를 위한 캘린더 페이지 기획 및 개발
@@ -104,14 +136,27 @@ const Career = () => {
             <div className="flex h-fit">
               <div className="w-[4px] h-[1.75em] bg-black mr-2" />
               <div className="font-bold text-lg">프론트엔드 기능 개발</div>
-              <div className="flex justify-end items-end ml-4 text-sm text-gray-400">2019.09 ~ </div>
+              <div className="flex justify-end items-end ml-4 text-sm text-gray-400">2020.09 ~ </div>
             </div>
             <ul className="mt-4">
-              <li className="list-disc ml-4 text-base">고객 유입 흐름 파악을 위한 업무 프로세스 관련 데이터 대규모 연동 (Funnel)</li>
+              <li className="list-disc ml-4 text-sm">
+                React Native프로젝트를 React Native/NextJS로 마이그레이션하여 배포시간을 48시간에서 15분으로 단축
+              </li>
+              <li className="list-disc mt-2 ml-4 text-sm"></li>
             </ul>
           </div>
         </div>
       </div>
+      {/* 
+        - React Native프로젝트를 React Native/NextJS로 마이그레이션하여 배포시간을 48시간에서 15분으로 단축
+        - Github Actions pipeline을 이용한, branch에 맞는 CI/CD 전략 구성 및 셋팅
+        - Adapter 패턴으로 웹앱 브릿지 모듈을 구현,  bridge 모듈과 RN라이브러리의 의존성 제거
+        - 디자인 시스템 구조를 개선하여 중복 컴포넌트 제거, 총 컴포넌트 수 75개(55%) 감소
+        - 컴포넌트 생성 스크립트와 타입 추가 자동화 스크립트를 작성하여 생산성 증가, 휴먼 오류 0%로 개선
+        - 30만개의 문제와 6가지의 타입으로 구성된 총 180만개의 페이지를 ISR로 구현, FCP 60%개선
+        - 필기 성능을 개선하기 위해 canvas와 Webgl등 19개의 필기 관련 라이브러리 및 glsl을 연구 후 필기 성능 개선
+        - Intersection Observer API를 사용해  Lazy Loading를 구현하여 12종류 그래프 페이지의 로딩속도 약 6s 개선  
+      */}
 
       {/* <div className="relative flex w-full mt-16">
         <Ripple active={activateIndex === 1} onClick={() => handleClickRipple(1)} />

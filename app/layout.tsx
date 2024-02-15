@@ -3,6 +3,7 @@ import type {Metadata} from "next"
 import {Inter} from "next/font/google"
 import "./globals.css"
 import Mousefollow from "./_components/feature/Mousefollow"
+import ScrollRestoration from "./_components/feature/ScrollRestoration"
 
 const inter = Inter({subsets: ["latin"]})
 
@@ -24,6 +25,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <body className="bg-[#E5E5E5] bg-[url('/images/noise.png')]">
         {children}
         <Mousefollow />
+        <ScrollRestoration />
       </body>
     </html>
   )
