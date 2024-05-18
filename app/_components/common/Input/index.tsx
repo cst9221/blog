@@ -1,7 +1,7 @@
-const Input = () => {
+const Input = ({...rest}) => {
   return (
     <div className="bg-gray-200">
-      <input className=" bg-transparent" />
+      <input className=" bg-transparent" {...rest} />
     </div>
   )
 }

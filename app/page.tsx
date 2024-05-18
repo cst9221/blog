@@ -2,6 +2,7 @@ import Head from "./head"
 import Projects from "./projects"
 import Career from "./career"
 import C from "./c"
+import Skills from "./skills"
 
 const DefaultPage = () => {
   return (
@@ -27,12 +28,12 @@ const DefaultPage = () => {
           <Projects />
         </div>
 
-        <div id="career" className="">
-          <Career />
+        <div id="skills" className="h-screen">
+          <Skills />
         </div>
 
-        <div id="skills" className="h-screen">
-          skills
+        <div id="career" className="">
+          <Career />
         </div>
 
         <div id="contact" className="h-screen">

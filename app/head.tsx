@@ -16,11 +16,11 @@ const Head = () => {
       <Link href="#projects" onClick={() => setHash("projects")}>
         <div className={`py-4 px-2 transition-colors font-bold ${hash === "projects" ? "text-[#FF4800]" : ""}`}>Projects</div>
       </Link>
-      <Link href="#career" onClick={() => setHash("career")}>
-        <div className={`py-4 px-2 transition-colors font-bold ${hash === "career" ? "text-[#FF4800]" : ""}`}>Career</div>
-      </Link>
       <Link href="#skills" onClick={() => setHash("skills")}>
         <div className={`py-4 px-2 transition-colors font-bold ${hash === "skills" ? "text-[#FF4800]" : ""}`}>Skills</div>
+      </Link>
+      <Link href="#career" onClick={() => setHash("career")}>
+        <div className={`py-4 px-2 transition-colors font-bold ${hash === "career" ? "text-[#FF4800]" : ""}`}>Career</div>
       </Link>
       <Link href="#contact" onClick={() => setHash("contact")}>
         <div className={`py-4 px-2 transition-colors font-bold ${hash === "contact" ? "text-[#FF4800]" : ""}`}>Contact</div>

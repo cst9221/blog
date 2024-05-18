@@ -19,7 +19,7 @@ const Projects = () => {
           ))}
       </div>
       <div className="flex-1 mt-[100px]">
-        <button className="bg-[#FF4800] rounded-full px-6 py-2 text-white text-sm" onClick={handleClickMore}>
+        <button className="bg-[#FF4800] rounded-md px-6 py-2 text-white text-sm" onClick={handleClickMore}>
           더 알아보기
         </button>
       </div>

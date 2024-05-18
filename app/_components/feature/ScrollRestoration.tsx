@@ -17,7 +17,6 @@ export default function ScrollRestoration() {
   // route가 변경됐을 때 마지막 스크롤 포지션 값을 저장
   useEffect(() => {
     sessionStorage.setItem("scrollPosition", window.scrollY.toString()) // sessionStorate에는 string값만 저장할 수 있다.
-    console.log(pathname, searchParams)
     return () => {}
   }, [pathname, searchParams])
 
