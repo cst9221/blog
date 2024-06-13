@@ -38,7 +38,7 @@
     "remark-gfm": "^4.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.0.0",
-    "reveal.js": "^5.0.4",
+    "reveal.js": "^5.1.0",
     "swiper": "^11.0.6",
     "unified": "^11.0.4"
   },
