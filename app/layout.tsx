@@ -1,11 +1,13 @@
 import type {Metadata} from "next"
 
-import {Inter} from "next/font/google"
+import {Roboto} from "next/font/google"
 import "./globals.css"
-import Mousefollow from "./_components/feature/Mousefollow"
-import ScrollRestoration from "./_components/feature/ScrollRestoration"
 
-const inter = Inter({subsets: ["latin"]})
+const roboto = Roboto({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap"
+})
 
 export const metadata: Metadata = {
   title: {
@@ -20,12 +22,45 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={roboto.className}>
       <head></head>
-      <body className="bg-[#E5E5E5] bg-[url('/images/noise.png')]">
+      <body className="bg-primary-dark">
+        <header className="fixed top-0 left-0 right-0 bg-gray-800 text-secondary-light">
+          <div className="container mx-auto flex justify-between items-center py-2 px-4">
+            <div className="font-bold">
+              <a href="#" className="hover:text-gray-300">
+                CST9221
+              </a>
+            </div>
+
+            <nav>
+              <ul className="flex space-x-4">
+                <li>
+                  <a href="#" className="text-sm hover:text-gray-300">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:text-gray-300">
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:text-gray-300">
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-sm hover:text-gray-300">
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </header>
+
         {children}
-        <Mousefollow />
-        <ScrollRestoration />
       </body>
     </html>
   )
