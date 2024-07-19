@@ -1,13 +1,12 @@
-import Card from "@/app/_components/common/Card"
-import KatexServerComponent from "../katex.server"
-import {list} from "../layout"
-import Text from "@/app/_components/common/Text"
-import KatexClientComponent from "../katex.client"
+// import KatexServerComponent from "../katex.server"
+// import {list} from "../layout"
+// import KatexClientComponent from "../katex.client"
 
-const TexPage = ({params}: {params: {tex: string}}) => {
+// const TexPage = ({params}: {params: {tex: string}}) => {
+const TexPage = () => {
   return (
     <>
-      <Card direction="horizontal">
+      {/* <Card direction="horizontal">
         <div className="flex flex-col flex-1">
           <Text>Server</Text>
           <KatexServerComponent tex={list[params.tex]} />
@@ -19,7 +18,7 @@ const TexPage = ({params}: {params: {tex: string}}) => {
           <Text>Client</Text>
           <KatexClientComponent tex={list[params.tex]} />
         </div>
-      </Card>
+      </Card> */}
     </>
   )
 }

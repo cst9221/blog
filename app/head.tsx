@@ -1,8 +1,7 @@
 "use client"
 
-import {useEffect, useMemo, useState} from "react"
+import {useState} from "react"
 import Link from "next/link"
-import {useParams, usePathname, useRouter, useSearchParams} from "next/navigation"
 
 const Head = () => {
   const [hash, setHash] = useState("about")

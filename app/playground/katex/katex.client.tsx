@@ -2,9 +2,9 @@
 
 import katex from "katex"
 import "katex/dist/katex.css"
-import {useEffect, useRef, useState} from "react"
+import {useEffect, useRef} from "react"
 
-const KatexClientComponent = ({tex}) => {
+const KatexClientComponent = ({tex}: {tex: string}) => {
   const elementRef = useRef(null)
 
   useEffect(() => {

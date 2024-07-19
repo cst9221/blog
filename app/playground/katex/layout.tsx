@@ -1,8 +1,3 @@
-import Card from "@/app/_components/common/Card"
-import H1 from "@/app/_components/common/Text/H1"
-import Text, {Paragraph} from "@/app/_components/common/Text"
-import Link from "next/link"
-
 export const list = {
   first: "x = \\dfrac {-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
   second: "\\begin{bmatrix} \\sigma = \\sqrt{ \\frac{1}{N} \\sum_{i=1}^N (x_i -\\mu)^2} \\end{bmatrix}",
@@ -15,12 +10,12 @@ export const list = {
   `
 }
 
-const KatexLayout = ({children}) => {
+const KatexLayout = () => {
   return (
     <>
-      <H1>ISR을 이용한 FCP 개선</H1>
+      {/* <H1>ISR을 이용한 FCP 개선</H1> */}
 
-      <Paragraph>
+      {/* <Paragraph>
         <u>
           <a href="https://katex.org/">katex</a>
         </u>
@@ -31,9 +26,9 @@ const KatexLayout = ({children}) => {
         {Object.keys(list).map((value) => (
           <Link href={`/playground/katex/${value}`}>{value}</Link>
         ))}
-      </div>
+      </div> */}
 
-      {children}
+      {/* {children} */}
     </>
   )
 }
