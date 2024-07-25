@@ -1,7 +1,8 @@
 const DefaultPage = () => {
   return (
     <>
-      <div className="relative"></div>
+      <div className="container mx-auto">
+      </div>
     </>
   )
 }

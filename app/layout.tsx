@@ -1,10 +1,12 @@
-import type {Metadata} from "next"
+import type { Metadata } from "next"
 
-import {Roboto} from "next/font/google"
+import { IBM_Plex_Sans_KR } from "next/font/google"
 import "./globals.css"
+import 'app/_styles/markdown.css'
+import Link from "next/link"
 
-const roboto = Roboto({
-  weight: "400",
+const IBMPlexSansKR = IBM_Plex_Sans_KR({
+  weight: ["400", "700"],
   subsets: ["latin"],
   display: "swap"
 })
@@ -20,47 +22,36 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={roboto.className}>
+    <html lang="ko" className={IBMPlexSansKR.className}>
       <head></head>
       <body className="bg-primary-dark">
-        <header className="fixed top-0 left-0 right-0 bg-gray-800 text-secondary-light">
-          <div className="container mx-auto flex justify-between items-center py-2 px-4">
-            <div className="font-bold">
-              <a href="#" className="hover:text-gray-300">
-                CST9221
-              </a>
+        <div className="pt-[60px]">
+          <header className="fixed top-0 left-0 right-0 flex justify-center h-[60px] z-50">
+            <div className="container mx-auto flex justify-between items-center">
+              <div className="font-bold">
+                <Link href="/" className="text-2xl hover:text-gray-300">
+                  CST9221
+                </Link>
+              </div>
+
+              <nav>
+                <ul className="flex space-x-4">
+                  <li>
+                    <Link href="/posts" className="text-sm hover:text-gray-300">
+                      posts
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
             </div>
+          </header>
 
-            <nav>
-              <ul className="flex space-x-4">
-                <li>
-                  <a href="#" className="text-sm hover:text-gray-300">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:text-gray-300">
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:text-gray-300">
-                    Services
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:text-gray-300">
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </header>
-
-        {children}
+          <main>
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   )

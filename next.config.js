@@ -9,7 +9,19 @@ const nextConfig = {
     return config
   },
   images: {
-    remotePatterns: []
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'miro.medium.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+      },
+
+    ]
   },
   typescript: {
     ignoreBuildErrors: true
