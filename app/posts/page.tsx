@@ -35,10 +35,10 @@ const PostCard: React.FC<{ title: string; description: string; thumbnail: string
     return (
         <Link href={path}>
             <div className='flex py-6 border-t-[1px]'>
-                <div className='relative aspect-[8/7] bg-red-300 mr-8'>
+                <div className='relative w-36 aspect-[8/7] mr-8'>
                     <Image src={thumbnail || 'https://picsum.photos/800/700'} width={160} height={140} objectFit='cover' objectPosition="center center" alt="" />
                 </div>
-                <div className='flex-grow'>
+                <div className='flex-1'>
                     <div className='text-xl font-bold'>
                         {title}
                     </div>
