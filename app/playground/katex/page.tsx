@@ -1,4 +1,4 @@
-const KatexPage = ({children}) => {
+const KatexPage = () => {
   return <></>
 }
 

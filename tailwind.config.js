@@ -5,23 +5,23 @@ module.exports = {
   darkMode: "class",
   theme: {
     screens: {
+      mini: "360px",
       mobile: "576px",
       tablet: "768px",
-      desktop: "992px"
+      // desktop: "992px"
     },
-    colors: {
-      primary: "#529E72",
-      "primary-dark": "#396f5c",
-      secondary: "#c2ffe9",
-      "secondary-light": "#e0fff4",
-      white: "#fafafa",
-      transparent: "transparent",
-      current: "currentColor"
-    },
+    // colors: {
+    //   primary: "#060606",
+    //   "primary-dark": "#fafafa",
+    //   white: "#fafafa",
+    //   transparent: "transparent",
+    //   current: "currentColor"
+    // },
     fontSize: {
       "2sm": "0.6rem",
       sm: "0.8rem",
       base: "1rem",
+      lg: "1.125rem",
       xl: "1.25rem",
       "2xl": "1.563rem",
       "3xl": "1.953rem",
@@ -30,7 +30,7 @@ module.exports = {
     }
   },
   plugins: [
-    ({addUtilities}) => {
+    ({ addUtilities }) => {
       addUtilities({
         ".contain-paint": {
           contain: "paint"
@@ -38,5 +38,5 @@ module.exports = {
       })
     },
     require("@tailwindcss/typography")
-  ]
+  ],
 }
