@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Highlight from "../_components/Highlight";
+import Highlight from "@/app/_components/common/Highlight";
 
 export default function AboutPage() {
     return (
         <div className="container mx-auto">
-            <div className="mt-32">
+            <div className="my-32">
                 <h1 className="text-4xl">안녕하세요. 최승태입니다.</h1>
 
                 <h2 className="text-2xl">자기소개</h2>
@@ -56,7 +56,7 @@ export default function AboutPage() {
 
 
 
-                ### 🅿️ 사내 통합운영시스템(Admin, CMS) 개발
+                ### 🅿️ 사내 통합운영시스템(Admin, CMS) 개발
 
                 2023.05 - 2024.04
 
@@ -65,7 +65,7 @@ export default function AboutPage() {
                 - 콘텐츠를 생성, 수정, 관리할 수 있도록 CMS 기능 개발. 반복작업 개선
                 - 푸시알림을 보내기위한 페이지 제작. 미리보기 등 기능 제공
 
-                ### 🅿️ [큐비(QB)](https://www.predictionai.co.kr/) 홈페이지
+                ### 🅿️ [큐비(QB)](https://www.predictionai.co.kr/) 홈페이지
 
                 2022.10 - 2023.01
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
 
                 - 재사용성을 위해 결제 모듈을 Github Packages Private로 배포
 
-                ### 🅿️ [큐비(QB)](https://www.predictionai.co.kr/) 리뉴얼 v2
+                ### 🅿️ [큐비(QB)](https://www.predictionai.co.kr/) 리뉴얼 v2
 
                 2021.12 - 2022.07
 
@@ -96,7 +96,7 @@ export default function AboutPage() {
                 - CKEditor5의 커스텀 플러그인 제작 및 Latex 플러그인 적용
                 - 사용자의 효율적인 작업을 위한 ShortCut Key 적용
 
-                ### 🅿️ 수학 수식 OCR 모델 테스트 및 학습 앱
+                ### 🅿️ 수학 수식 OCR 모델 테스트 및 학습 앱
 
                 2021.11 - 2021.11
 
@@ -111,7 +111,7 @@ export default function AboutPage() {
                 - Express.js로 푸시알림 서버 구축
                 - worker를 활용한 병렬처리로 20만 유저에게 빠르게 알림 전송
 
-                ### 🅿️ 큐비 books (Swift)
+                ### 🅿️ 큐비 books (Swift)
 
                 2021.11 - 2022.05
 

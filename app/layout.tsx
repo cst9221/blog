@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
 
 import { IBM_Plex_Sans_KR } from "next/font/google"
-import "./globals.css"
-import 'app/_styles/markdown.css'
 import Link from "next/link"
-import AuthMenu from "./AuthMenu"
+import AuthMenu from "./_components/AuthMenu"
 import NextAuthSessionProvider from "./NextAuthProvider"
+
+import "@/app/globals.css"
+import '@/app/_styles/markdown.css'
 
 const IBMPlexSansKR = IBM_Plex_Sans_KR({
   weight: ['100', '200', '300', '400', '500', '600', '700'],
@@ -52,13 +53,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       </Link>
                     </li>
                     <li>
+                      <Link href="/playground" className="text-sm hover:text-gray-300">
+                        playground
+                      </Link>
+                    </li>
+                    <li>
                       <AuthMenu />
                     </li>
                   </ul>
                 </nav>
               </div>
             </header>
-
             <main>
               {children}
             </main>

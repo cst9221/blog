@@ -1,55 +1,53 @@
-import Image from 'next/image'
-import postsData from "app/_content/posts/index.json"
 import Link from 'next/link'
 
-export default async function PostsPage() {
-    const routes = postsData
+import postsData from "@/app/_content/posts/index"
+import Chip from '@/app/_components/common/Chip'
+import PostCard from '@/app/posts/_components/PostCard';
 
-    // const contentPath = 'app/_content/posts/'
-    // const paths = fs.readdirSync(contentPath, 'utf8')
-    // const posts = await Promise.all(paths.map((path) => {
-    //     const content = fs.readFileSync(`${contentPath}${path}`, 'utf8')
-    //     const stat = fs.statSync(`${contentPath}${path}`)
-    //     console.log(stat.birthtime)
-
-    //     const title = path.substring(0, path.length - 3)
-    //     const description = content.match(/<Intro>([\w\W]*)<\/Intro>/)?.[1].trim()
-    //     const thumbnail = content.match(/<Thumbnail>\W*!\[[\w\W]*\]\(([\w\W]*)\)\W*<\/Thumbnail>/)?.[1].trim()
-
-    //     return { title, content, description, thumbnail }
-    // }))
-
+export default async function PostsPage({
+    searchParams,
+}: {
+    searchParams?: {
+        tag?: string;
+        page?: string;
+    };
+}) {
+    // query string
+    const curTag = searchParams?.tag || '';
+    // posts 
+    let posts = postsData
+    // posts 전체 길이
+    const postsCount = posts.length
+    // tag별 그룹 카운트
+    const groupByTag = posts.reduce((acc, post) => {
+        for (const tag of post.tags) {
+            if (!acc[tag]) acc[tag] = 0
+            acc[tag] += 1
+        }
+        return acc
+    }, {} as Record<string, number>)
+    // query string에 tag가 있으면 해당 tag의 포스트만 가져오기
+    if (curTag) posts = posts.filter((post) => post.tags?.includes(curTag))
 
     return (
         <div className='container mx-auto first:border-none'>
-            <div className='py-4'>{routes.length} posts</div>
+            <div className='flex py-4 overflow-x-scroll'>
+                <div>
+                    <Link href="/posts">
+                        <Chip variant={curTag ? "inactive" : "active"}>all {postsCount}</Chip>
+                    </Link>
+                </div>
+                {Object.entries(groupByTag).map(([tag, count]) => (
+                    <div key={tag} className="pl-2">
+                        <Link href={`/posts?tag=${tag}`}>
+                            <Chip variant={tag === curTag ? "active" : "inactive"}>{tag} {count}</Chip>
+                        </Link>
+                    </div>
+                ))}
+            </div>
             <div className=''>
-                {routes.map((route) => <PostCard key={route.title} {...route} />)}
+                {posts.map((post) => <PostCard key={post.title} {...post} />)}
             </div>
         </div>
-    )
-}
-
-const PostCard: React.FC<{ title: string; description: string; thumbnail: string, path: string, createdAt: string }> = ({ title, description, thumbnail, path, createdAt }) => {
-
-    return (
-        <Link href={path}>
-            <div className='flex py-6 border-t-[1px]'>
-                <div className='relative w-36 aspect-[8/7] mr-8'>
-                    <Image src={thumbnail || 'https://picsum.photos/800/700'} width={160} height={140} objectFit='cover' objectPosition="center center" alt="" />
-                </div>
-                <div className='flex-1'>
-                    <div className='text-xl font-bold'>
-                        {title}
-                    </div>
-                    <div className='text-sm text-gray-500 pt-2'>
-                        {description}
-                    </div>
-                    <div className='text-sm text-gray-500 pt-2'>
-                        {createdAt}
-                    </div>
-                </div>
-            </div>
-        </Link>
     )
 }
