@@ -19,17 +19,29 @@
     "incremental": true,
     "baseUrl": "./",
     "types": [],
-    "typeRoots": ["./app/_type"],
+    "typeRoots": [
+      "./app/_type"
+    ],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./*",]
+      "@/*": [
+        "./*",
+      ]
     },
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "app/_lib/utils",
+  ]
 }

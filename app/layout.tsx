@@ -1,10 +1,15 @@
-import type {Metadata} from "next"
+import type { Metadata } from "next"
 
-import {Roboto} from "next/font/google"
-import "./globals.css"
+import { IBM_Plex_Sans_KR } from "next/font/google"
+import Link from "next/link"
+import AuthMenu from "./_components/AuthMenu"
+import NextAuthSessionProvider from "./NextAuthProvider"
 
-const roboto = Roboto({
-  weight: "400",
+import "@/app/globals.css"
+import '@/app/_styles/markdown.css'
+
+const IBMPlexSansKR = IBM_Plex_Sans_KR({
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
   subsets: ["latin"],
   display: "swap"
 })
@@ -20,47 +25,50 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={roboto.className}>
+    <html lang="ko" className={IBMPlexSansKR.className}>
       <head></head>
       <body className="bg-primary-dark">
-        <header className="fixed top-0 left-0 right-0 bg-gray-800 text-secondary-light">
-          <div className="container mx-auto flex justify-between items-center py-2 px-4">
-            <div className="font-bold">
-              <a href="#" className="hover:text-gray-300">
-                CST9221
-              </a>
-            </div>
+        <NextAuthSessionProvider>
+          <div className="pt-[60px]">
+            <header className="fixed top-0 left-0 right-0 flex justify-center h-[60px] bg-white z-50">
+              <div className="container mx-auto flex justify-between items-center">
+                <div className="font-bold">
+                  <Link href="/" className="text-2xl hover:text-gray-300">
+                    CST9221
+                  </Link>
+                </div>
 
-            <nav>
-              <ul className="flex space-x-4">
-                <li>
-                  <a href="#" className="text-sm hover:text-gray-300">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:text-gray-300">
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:text-gray-300">
-                    Services
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:text-gray-300">
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </nav>
+                <nav>
+                  <ul className="flex items-center space-x-4">
+                    <li>
+                      <Link href="/about" className="text-sm hover:text-gray-300">
+                        about
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/posts" className="text-sm hover:text-gray-300">
+                        posts
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/playground" className="text-sm hover:text-gray-300">
+                        playground
+                      </Link>
+                    </li>
+                    <li>
+                      <AuthMenu />
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </header>
+            <main>
+              {children}
+            </main>
           </div>
-        </header>
-
-        {children}
+        </NextAuthSessionProvider>
       </body>
     </html>
   )
