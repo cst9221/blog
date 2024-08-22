@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --max-width: 1100px;
+
+    --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+      "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+      
+    --color-primary: #101010;
+    --color-secondary: #2d3748;
+    --color-accent: #16a34a;
+
+    --color-bg-primary: #fcfcfc;
+    --color-bg-secondary: #dddddd;
+
+    --color-text-primary: #101010;
+    --color-text-secondary: #2d3748;
+    --color-text-accent: #16a34a;
+
+    --color-border-primary: #101010;
+    --color-border-secondary: #2d3748;
+    --color-border-accent: #16a34a;
+
+    --border-radius: 12px;
+
+    --padding: 8px;
+    --margin: 8px;
+  }
+  a {
+    /* text-decoration: underline var(--color-border-secondary); */
+  }
+}
+
 @layer utilities {
   h1 {
     @apply text-5xl font-extrabold mt-4 mb-6 leading-none;
@@ -34,18 +66,7 @@
 
 
 
-:root {
-  --max-width: 1100px;
-  --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
-    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
-  --color-bg-primary: #fcfcfc;
-  --color-bg-secondary: #dddddd;
-  --color-text-primary: #101010;
-  --color-text-secondary: #2d3748;
-  --color-text-accent: #2b6cb0;
-}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -197,14 +218,6 @@ mark {
   }
 }
 
-/* grid */
-/* .grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 8px;
-  margin: 0 8px;
-  min-width: 360px;
-} */
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 }
@@ -219,14 +232,4 @@ mark {
 }
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-}
-
-/* swiper */
-
-.swiper-pagination-progressbar {
-  top: unset !important;
-  bottom: 0 !important;
-}
-.swiper-pagination-progressbar-fill {
-  background: #ff4800 !important;
 }
