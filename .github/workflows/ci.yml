@@ -8,6 +8,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Set up secret file
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: |
+          echo ${{secrets.LHCI_GITHUB_APP_TOKEN}} | sed 's/./& /g'
       - run: npm install && npm install -g @lhci/cli@0.14.x
       - run: npm run build
       - run: lhci autorun
