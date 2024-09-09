@@ -13,3 +13,8 @@ jobs:
       - run: lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      - run: |
+          echo "${{ secrets.LHCI_GITHUB_APP_TOKEN }}"
+          echo "123" > test.txt
+          values=`cat test.txt`
+          echo "test2=$values" >> $GITHUB_OUTPUT
