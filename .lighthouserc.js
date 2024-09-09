@@ -13,7 +13,7 @@ module.exports = {
             preset: "lighthouse:recommended",
         },
         upload: {
-            // target: "temporary-public-storage"
+            target: "temporary-public-storage"
         },
         server: {
         },
