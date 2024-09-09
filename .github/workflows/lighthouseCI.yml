@@ -1,0 +1,42 @@
+name: Lighthouse CI
+
+on:
+  pull_request: [main]
+
+jobs:
+  lighthouseci:
+    name: Generate Lighthouse Report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Check Dependencies & Install & Build
+        run: |
+          npm install && npm install -g @lhci/cli@0.14.x && npm run build
+      - name: Run Lighthouse CI
+        id: lhci
+        run: lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      # - name: Set a variable
+      #   id: example_step
+      #   run: echo "::set-output name=result::Hello, GitHub Actions"
+
+      - name: Print the result
+        run: echo "The result is: ${{ steps.lhci.outputs }}"
+
+      # - name: Post Link to Lighthouse Report
+      #   uses: thollander/actions-comment-pull-request@v2
+      #   with:
+      #     comment_tag: lighthouse
+      #     message: |
+      #       Check out your Lighthouse Report: https://lighthouse.hybus.app/app/projects/hybus-genesis-production
+      #     mode: recreate
+      # - name: Set up secret file
+      #   env:
+      #     LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      #   run: |
+      #     echo ${{secrets.LHCI_GITHUB_APP_TOKEN}} | sed 's/./& /g'
