@@ -6,7 +6,7 @@ import Item from "./_components/Item"
 export default function AboutPage() {
     return (
         <div className="container mx-auto">
-            <div className="my-32">
+            <div className="mt-32 mb-64">
 
                 {/* 자기소개 */}
                 <Block>
@@ -193,7 +193,7 @@ export default function AboutPage() {
                 {/* 기술스택 */}
                 <Block>
                     <h2 className="text-3xl">기술스택</h2>
-                    <div className="flex -mt-8">
+                    <div className="flex mt-8">
                         <div className="flex-1 mb-2">
                             <h4 className="text-xl text-black font-bold">Language</h4>
                             <Item>
@@ -267,24 +267,23 @@ export default function AboutPage() {
                     </div>
                 </Block>
 
-                {/*  */}
-                {/* <Block>
-                    <h2 className="text-3xl">학력사항</h2>
-                    <div className="flex justify-between mb-4">
-                        <div>
-                            <span className="text-xl text-black font-bold">백석대학교 </span>
-                            <span className="text-base text-gray-500">소프트웨어학과 (3.29 / 4.5)</span>
-                        </div>
+                {/* Contact */}
+                <Block>
+                    <h2 className="text-3xl">Contact</h2>
 
-                        <span className="text-gray-300">2014 - 2020</span>
-                    </div>
                     <Item>
-                        사내 프론트엔드 팀 모임.
+                        Email : <UnderlineLink href="mailto:chltmdxo3@gmail.com" target="_blank">chltmdxo3@gmail.com</UnderlineLink>
                     </Item>
                     <Item>
-                        - 모노레포(turborepo) 도입 및 발표  <UnderlineLink href="https://www.notion.so/8ca2dd30e5be4172a271c897bf2de0e4?pvs=21" target="_blank">(자료)</UnderlineLink>
+                        LinkedIn : <UnderlineLink href="https://www.linkedin.com/in/chltmdxo3/" target="_blank">https://www.linkedin.com/in/chltmdxo3</UnderlineLink>
                     </Item>
-                </Block> */}
+                    <Item>
+                        GitHub : <UnderlineLink href="https://github.com/cst9221" target="_blank">https://github.com/cst9221</UnderlineLink>
+                    </Item>
+                    <Item>
+                        Blog : <UnderlineLink href="https://velog.io/@chltmdxo3/posts" target="_blank">https://velog.io/@chltmdxo3/posts</UnderlineLink>
+                    </Item>
+                </Block>
             </div>
         </div>
     )

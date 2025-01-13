@@ -6,7 +6,7 @@ import AuthMenu from "./_components/AuthMenu"
 import NextAuthSessionProvider from "./NextAuthProvider"
 
 import "@/app/globals.css"
-import '@/app/_styles/markdown.css'
+// import '@/app/_styles/markdown.css'
 
 const IBMPlexSansKR = IBM_Plex_Sans_KR({
   weight: ['100', '200', '300', '400', '500', '600', '700'],
